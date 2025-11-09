@@ -1,0 +1,5 @@
+{
+  "name": "DARDJA Ai Voice",
+  "description": "A web application that allows users to generate realistic Algerian Arabic voiceovers using Google's Text-to-Speech API.",
+  "requestFramePermissions": []
+}
