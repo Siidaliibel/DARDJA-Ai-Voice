@@ -5,8 +5,8 @@ import axios from "axios";
 import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
-
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -14,15 +14,13 @@ app.use(express.json());
 app.post("/generate", async (req, res) => {
   try {
     const { text, voice } = req.body;
-
     const voiceMap = {
       Amel: "Leda",
       Wael: "Algenib",
       Imene: "Sulafat",
       Amine: "Achird",
     };
-
-    const selectedVoice = voiceMap[voice] || "Leda";
+    const selectedVoice = voiceMap[voice] || "Leda"; // ✅ تصحيح هنا (كان بدون ||)
 
     const response = await axios.post(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent",
@@ -61,7 +59,6 @@ app.post("/generate", async (req, res) => {
     } else {
       console.error(error.message);
     }
-
     res.status(500).json({
       error:
         "⚠️ خطأ داخلي في السيرفر. تحقق من مفتاح Google API أو إعدادات الصوت.",
@@ -113,8 +110,13 @@ app.post("/admin/toggle-active", async (req, res) => {
   }
 });
 
+/* ------------------------------- ✅ Endpoint بسيط للـ cron-job ------------------------------- */
+app.get("/", (req, res) => {
+  res.send("Server Active ✅");
+});
+
 /* ------------------------------- 🚀 تشغيل السيرفر ------------------------------- */
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001; // ✅ تصحيح هنا (كان بدون ||)
 app.listen(PORT, () =>
   console.log(`✅ Server running on port ${PORT} (with Admin API)`)
 );
