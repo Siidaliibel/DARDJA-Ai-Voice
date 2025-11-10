@@ -1,19 +1,16 @@
 services:
   - type: web
+    name: dardja-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
+    plan: free
+
+  - type: web
     name: dardja-backend
     env: node
     rootDir: backend
     buildCommand: npm install
-    startCommand: node index.js
-    plan: free
-    envVars:
-      - key: PORT
-        value: 10000
-
-  - type: web
-    name: dardja-frontend
-    env: node
-    rootDir: frontend
-    buildCommand: npm run build
-    startCommand: npm run preview
+    startCommand: node server.js
     plan: free
