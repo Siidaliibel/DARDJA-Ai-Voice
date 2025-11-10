@@ -3,11 +3,27 @@ import type { Voice, Translations } from './types';
 
 export const MAX_GENERATIONS = 200;
 
-export const VOICES = [
-  { id: "Amel", name: "Amel" },
-  { id: "Wael", name: "Wael" },
-  { id: "Imene", name: "Imene" },
-  { id: "Amine", name: "Amine" },
+export const VOICES: Voice[] = [
+  {
+    id: "Amel",
+    name: "Amel",
+    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amel.wav",
+  },
+  {
+    id: "Wael",
+    name: "Wael",
+    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/wael.wav",
+  },
+  {
+    id: "Imen",
+    name: "Imen",
+    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/imen.wav",
+  },
+  {
+    id: "Amine",
+    name: "Amine",
+    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amine.wav",
+  },
 ];
 
 export const DEFAULT_VOICE_STYLE_PROMPT = `Please generate a voiceover in the Algerian Arabic dialect with a marketing tone that is energetic, persuasive, and friendly. The voice should sound like it's speaking directly to the customer, encouraging them to take action. The tone should be confident, enthusiastic, and engaging, with a medium to fast pace and natural conversational rhythm. Here's the script to read:`;

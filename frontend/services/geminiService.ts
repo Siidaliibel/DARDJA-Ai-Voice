@@ -1,5 +1,5 @@
 export async function generateSpeech(text: string, voice: string) {
-  const response = await fetch("http://localhost:3001/generate", {
+  const response = await fetch("https://dardja-ai-voice.onrender.com/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, voice }), // ✅ إرسال النص + الصوت
