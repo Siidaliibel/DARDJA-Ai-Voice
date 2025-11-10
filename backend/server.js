@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import axios from "axios";
-import { createClient } from "@supabase/supabase-js"; // ✅ مضافة
+import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* ------------------------------- 🎙 الكود الأصلي الخاص بتوليد الصوت ------------------------------- */
+/* ------------------------------- 🎙 توليد الصوت ------------------------------- */
 app.post("/generate", async (req, res) => {
   try {
     const { text, voice } = req.body;
@@ -63,12 +63,13 @@ app.post("/generate", async (req, res) => {
     }
 
     res.status(500).json({
-      error: "⚠️ خطأ داخلي في السيرفر. تحقق من مفتاح Google API أو إعدادات الصوت.",
+      error:
+        "⚠️ خطأ داخلي في السيرفر. تحقق من مفتاح Google API أو إعدادات الصوت.",
     });
   }
 });
 
-/* ------------------------------- 👑 كود لوحة الأدمين (Supabase Admin API) ------------------------------- */
+/* ------------------------------- 👑 لوحة الأدمين (Supabase Admin API) ------------------------------- */
 const supabaseAdmin = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -113,4 +114,7 @@ app.post("/admin/toggle-active", async (req, res) => {
 });
 
 /* ------------------------------- 🚀 تشغيل السيرفر ------------------------------- */
-app.listen(3001, () => console.log("✅ Server running on port 3001 (with Admin API)"));
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () =>
+  console.log(`✅ Server running on port ${PORT} (with Admin API)`)
+);
