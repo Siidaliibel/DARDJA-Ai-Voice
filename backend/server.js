@@ -15,11 +15,17 @@ app.post("/generate", async (req, res) => {
   try {
     const { text, voice } = req.body;
     const voiceMap = {
-      Amel: "Leda",
-      Wael: "Algenib",
-      Imene: "Sulafat",
-      Amine: "Achird",
-    };
+  Amel: "Leda",
+  Wael: "Algenib",
+  Imene: "Sulafat",
+  Amine: "Achird",
+  Samir: "Sadaltager",
+  Ramzi: "Zubenelgenubi",
+  Ines: "Laomedeia",
+  Yasmine: "Erinome",
+  Kawther: "Despina"
+};
+
     const selectedVoice = voiceMap[voice] || "Leda"; // ✅ تصحيح هنا (كان بدون ||)
 
     const response = await axios.post(

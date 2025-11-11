@@ -15,11 +15,17 @@ app.post("/generate", async (req, res) => {
     const { text, voice } = req.body;
 
     const voiceMap = {
-      Amel: "Leda",
-      Wael: "Algenib",
-      Imene: "Sulafat",
-      Amine: "Achird",
-    };
+  Amel: "Leda",
+  Wael: "Algenib",
+  Imene: "Sulafat",
+  Amine: "Achird",
+  Samir: "Sadaltager",
+  Ramzi: "Zubenelgenubi",
+  Ines: "Laomedeia",
+  Yasmine: "Erinome",
+  Kawther: "Despina"
+};
+
 
     const selectedVoice = voiceMap[voice] || "Leda";
 
@@ -56,4 +62,4 @@ app.post("/generate", async (req, res) => {
   }
 });
 
-app.listen(3001, () => console.log("🚀 Backend running on http://localhost:3001"));
+app.listen(3001, () => console.log("🚀 Backend running on https://dardja-ai-voice.onrender.com"));
