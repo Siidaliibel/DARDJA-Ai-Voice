@@ -7,24 +7,59 @@ export const VOICES: Voice[] = [
   {
     id: "Amel",
     name: "Amel",
-    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amel.wav",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amel.wav",
   },
   {
     id: "Wael",
     name: "Wael",
-    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/wael.wav",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/wael.wav",
   },
   {
     id: "Imen",
     name: "Imen",
-    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/imen.wav",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/imen.wav",
   },
   {
     id: "Amine",
     name: "Amine",
-    previewUrl: "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amine.wav",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amine.wav",
+  },
+  {
+    id: "Samir",
+    name: "Samir",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Samir.wav",
+  },
+  {
+    id: "Ramzi",
+    name: "Ramzi",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Ramzi.wav",
+  },
+  {
+    id: "Ines",
+    name: "Ines",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/ines.wav",
+  },
+  {
+    id: "Yasmine",
+    name: "Yasmine",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Yasmine.wav",
+  },
+  {
+    id: "Kawther",
+    name: "Kawther",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Kawther.wav",
   },
 ];
+
 
 export const DEFAULT_VOICE_STYLE_PROMPT = `Please generate a voiceover in the Algerian Arabic dialect with a marketing tone that is energetic, persuasive, and friendly. The voice should sound like it's speaking directly to the customer, encouraging them to take action. The tone should be confident, enthusiastic, and engaging, with a medium to fast pace and natural conversational rhythm. Here's the script to read:`;
 
@@ -73,7 +108,7 @@ export const TRANSLATIONS: Translations = {
     speedControl: 'السرعة',
     downloadWav: 'تحميل كملف WAV',
     limitReached: 'لقد وصلت إلى حدك الشهري. يرجى تجديد اشتراكك.',
-    footerText: '© 2025 درجة - صوت الذكاء الاصطناعي – جميع الحقوق محفوظة.',
+    footerText: '© 2025 دارجة - صوت الذكاء الاصطناعي – جميع الحقوق محفوظة.',
     generationError: 'حدث خطأ أثناء إنشاء الصوت. يرجى المحاولة مرة أخرى.',
   },
 };
