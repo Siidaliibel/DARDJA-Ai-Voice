@@ -38,7 +38,38 @@ const VOICE_PREVIEWS = [
     previewUrl:
       "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/amine.wav",
   },
+  {
+    id: "Samir",
+    name: "Samir",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Samir.wav",
+  },
+  {
+    id: "Ramzi",
+    name: "Ramzi",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Ramzi.wav",
+  },
+  {
+    id: "Ines",
+    name: "Ines",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/ines.wav",
+  },
+  {
+    id: "Yasmine",
+    name: "Yasmine",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Yasmine.wav",
+  },
+  {
+    id: "Kawther",
+    name: "Kawther",
+    previewUrl:
+      "https://egnqddcngnhkfjzixdhj.supabase.co/storage/v1/object/public/voice-previews/Kawther.wav",
+  },
 ];
+
 
 // ✅ مكون الهيدر
 const Header: React.FC<{
