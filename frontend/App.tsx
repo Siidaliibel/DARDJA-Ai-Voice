@@ -70,7 +70,6 @@ const VOICE_PREVIEWS = [
   },
 ];
 
-
 // ✅ مكون الهيدر
 const Header: React.FC<{
   language: Language;
@@ -180,7 +179,6 @@ const AudioPlayer: React.FC<{
             ))}
           </select>
         </div>
-
         {canDownload ? (
           <a
             href={audioUrl}
@@ -201,6 +199,7 @@ const AudioPlayer: React.FC<{
     </div>
   );
 };
+
 // ---------------- بدأ مكون App
 export default function App() {
   const navigate = useNavigate();
@@ -217,7 +216,6 @@ export default function App() {
   const [isTrialEnded, setIsTrialEnded] = useState(false);
   const [generationTime, setGenerationTime] = useState(0);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
-
   const trans = TRANSLATIONS[language];
   const timerIntervalRef = useRef<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -231,37 +229,48 @@ export default function App() {
         navigate("/login");
         return;
       }
-
       if (session) {
         localStorage.setItem("supabase.auth.token", JSON.stringify(session));
       }
-
       const user = session.user;
       const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
         .single();
-
       if (!profileData) {
         navigate("/login");
         return;
       }
-
       setProfile(profileData);
       setGenerationCount(profileData.usage_count ?? 0);
-
       const limit = profileData.max_generations ?? 2;
-      const hasEnded = profileData.active === false || (profileData.trial_used && profileData.usage_count >= limit);
+      const hasEnded =
+        profileData.active === false ||
+        (profileData.trial_used && profileData.usage_count >= limit);
       setIsTrialEnded(hasEnded);
-
       if (profileData.role === "admin") setIsAdmin(true);
     };
-
     fetchProfile();
   }, [navigate]);
 
-  // ✅ مؤقت التوليد
+  // ✅ الأمثلة الجاهزة
+  const handleTryExample1 = () => {
+    setScriptText(
+      "كامل نحبو نوثقو اللحظات الجميلة لي نعيشوهاو خاصة كي نكونو في البحر ولا في la piscine،ولّا في مغامرة.لأول مرة، mini camera sport متوفرة في الجزائر، خفيفة، صغيرة، وتصورك من منظورك،مجهزة بغلاف بلاستيكي ضد الماء، وتستحمل عمق يفوت 30 متريعني سواء كنت تحب الغطس، تسبح، ولا تلعب فالأمواج، الكاميرا معاك وتخدم بلا ما تخاف عليها."
+    );
+  };
+
+  const handleTryExample2 = () => {
+    setScriptText(
+      "كي تكون تعاني م les ongles incarné، حتى حياتك اليومية تتعقد، ما تقدرش تلبس الصباط لي تحبّو، تمشي بصعوبة، و حتى المظهر تاع رجليك يفسد، و على هذي وفرنالك الحل لي يرجّعلك الراحة و الثقة بنفسك،أداة تقويم الأظافر، جهاز ذَكي و سهل الإستعمال، يصحح الظفر شوية بشوية حتى يرجع لبلاصتو الطبيعية، يخليك تلبس واش تحب و تمشي بلا قلق.كامل لي جرّبوه لاحظو الفرق مع مرور الأيام، السْطَرْ يحبس، و شكل الأظافر يتحسّن.و الأجمل من هاد الشي أنو تستعملو في دارك و t'éviter les médecins و مصاريف الدواء.المنتج راهو متوفر عندنا دير la commande ديالك و رجّع راحتك و ثقتك بنفسك"
+    );
+  };
+
+  const handleTryExample = () => {
+    setVoiceStylePrompt(DEFAULT_VOICE_STYLE_PROMPT);
+    setScriptText(EXAMPLE_SCRIPT_TEXT);
+  };
   const startTimer = useCallback(() => {
     setGenerationTime(0);
     timerIntervalRef.current = window.setInterval(() => {
@@ -275,11 +284,10 @@ export default function App() {
       timerIntervalRef.current = null;
     }
   }, []);
-  // ✅ تشغيل / إيقاف صوت المعاينة 🎧 ⏸️
+
   const handlePlayPreview = () => {
     const voice = VOICE_PREVIEWS.find((v) => v.id === selectedVoice);
     if (!voice?.previewUrl) return;
-
     if (previewAudioRef.current) {
       previewAudioRef.current.pause();
       previewAudioRef.current.currentTime = 0;
@@ -287,7 +295,6 @@ export default function App() {
       setIsPreviewPlaying(false);
       return;
     }
-
     const audio = new Audio(voice.previewUrl);
     previewAudioRef.current = audio;
     setIsPreviewPlaying(true);
@@ -298,31 +305,23 @@ export default function App() {
     };
   };
 
-  // ✅ إنشاء الصوت + تحديث العدّاد + منع التكرار بعد الحد
   const handleGenerate = async () => {
     if (!profile) return;
 
-    // **أهم تعديل هنا**: جلب أحدث نسخة من صف البروفايل قبل أي تحقق
-    const { data: latestProfile, error: latestErr } = await supabase
+    const { data: latestProfile } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", profile.id)
       .single();
-
-    const effectiveProfile = latestProfile ?? profile; // fallback إذا فشل الطلب
-
-    // احصل القيم المباشرة من السطر الأحدث
+    const effectiveProfile = latestProfile ?? profile;
     const limit = effectiveProfile.max_generations ?? 2;
     const currentCount = effectiveProfile.usage_count ?? 0;
-    const isActive = effectiveProfile.active !== false; // treat undefined as active
+    const isActive = effectiveProfile.active !== false;
 
-    // 🚫 إذا انتهت التجربة أو الحساب موقوف
     if (!isActive || (effectiveProfile.trial_used && currentCount >= limit)) {
       setIsTrialEnded(true);
-      // تأكدنا من كتابة trial_used في القاعدة إن لزم (قاعدة تعطيك الحق في تغيير الرسالة)
       await supabase.from("profiles").update({ trial_used: true }).eq("id", profile.id);
       alert("🎯 انتهت تجربتك المجانية. يمكنك تفعيل 200 توليد صوتي بـ 2900 دج.");
-      // حدّث الحالة المحلية أيضاً
       setProfile((p: any) => ({ ...p, trial_used: true, active: false }));
       return;
     }
@@ -340,7 +339,6 @@ export default function App() {
     setIsGenerating(true);
     setError(null);
     startTimer();
-
     abortControllerRef.current = new AbortController();
     const currentAbort = abortControllerRef.current;
     const fullPrompt = `${voiceStylePrompt} ${scriptText}`;
@@ -348,23 +346,18 @@ export default function App() {
     try {
       const base64Audio = await generateSpeech(fullPrompt, selectedVoice);
       if (currentAbort.signal.aborted) return;
-
       const wavBlob = pcmToWavBlob(base64Audio);
       const newAudioUrl = URL.createObjectURL(wavBlob);
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       setAudioUrl(newAudioUrl);
 
-      // ✅ زيادة العدد وتحديثه في Supabase ثم جلب القيمة المحدثة مباشرة
       const newCount = currentCount + 1;
-
       const { data: updatedProfile } = await supabase
         .from("profiles")
         .update({ usage_count: newCount })
         .eq("id", profile.id)
         .select("*")
         .single();
-
-      // تحديث الحالة في React مباشرة بعد كل توليد
       if (updatedProfile) {
         setProfile(updatedProfile);
         setGenerationCount(updatedProfile.usage_count ?? newCount);
@@ -372,12 +365,8 @@ export default function App() {
         setGenerationCount(newCount);
       }
 
-      // 🚫 منع التوليد بعد الوصول إلى الحد
       if ((updatedProfile?.usage_count ?? newCount) >= (updatedProfile?.max_generations ?? limit)) {
-        await supabase
-          .from("profiles")
-          .update({ trial_used: true })
-          .eq("id", profile.id);
+        await supabase.from("profiles").update({ trial_used: true }).eq("id", profile.id);
         setIsTrialEnded(true);
         alert("🚫 انتهت تجربتك المجانية. فعّل حسابك للمتابعة.");
       }
@@ -389,7 +378,7 @@ export default function App() {
       stopTimer();
     }
   };
-  // ✅ إيقاف التوليد
+
   const handleStop = () => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     setIsGenerating(false);
@@ -397,15 +386,8 @@ export default function App() {
     setGenerationTime(0);
   };
 
-  const handleTryExample = () => {
-    setVoiceStylePrompt(DEFAULT_VOICE_STYLE_PROMPT);
-    setScriptText(EXAMPLE_SCRIPT_TEXT);
-  };
-
   const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
+    const m = Math.floor(seconds / 60).toString().padStart(2, "0");
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
@@ -452,7 +434,6 @@ export default function App() {
                 className="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1A73E8]"
               />
             </div>
-
             <div>
               <label
                 htmlFor="script-text"
@@ -473,8 +454,20 @@ export default function App() {
             </div>
           </div>
 
-          {/* مثال جاهز */}
-          <div className="flex justify-end">
+          {/* الأمثلة الجاهزة */}
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={handleTryExample1}
+              className="text-sm text-[#1A73E8] hover:underline"
+            >
+              Try Example 1
+            </button>
+            <button
+              onClick={handleTryExample2}
+              className="text-sm text-[#1A73E8] hover:underline"
+            >
+              Try Example 2
+            </button>
             <button
               onClick={handleTryExample}
               className="text-sm text-[#1A73E8] hover:underline"
@@ -500,7 +493,6 @@ export default function App() {
                   ))}
                 </select>
 
-                {/* زر المعاينة 🎧 */}
                 <button
                   onClick={handlePlayPreview}
                   className={`${
@@ -515,14 +507,13 @@ export default function App() {
               </div>
             </div>
 
-            {/* زر التوليد 🎙️ */}
+            {/* زر التوليد 🎙 */}
             <div className="flex-grow flex items-center gap-2 w-full sm:w-auto">
               {isGenerating && (
                 <div className="text-sm font-mono text-gray-400 w-12">
                   {formatTime(generationTime)}
                 </div>
               )}
-
               {isGenerating ? (
                 <button
                   onClick={handleStop}
@@ -546,23 +537,21 @@ export default function App() {
             </div>
           </div>
 
-          {/* إشعار نهاية التجربة */}
           {isTrialEnded && (
             <p className="text-center text-yellow-400 text-sm mt-2">
               🎯 انتهت تجربتك المجانية. يمكنك تفعيل 200 تعليق صوتي بـ <b>2900 دج</b>.
             </p>
           )}
 
-          {/* عرض الأخطاء */}
           {error && <p className="text-center text-red-400 text-sm mt-2">{error}</p>}
 
-          {/* عداد التوليدات */}
           <p className="text-center text-xs text-gray-500 mt-2">
             {generationCount} / {profile?.max_generations ?? 2} توليد صوتي.
           </p>
 
-          {/* مشغل الصوت */}
-          {audioUrl && <AudioPlayer audioUrl={audioUrl} trans={trans} canDownload={canDownload} />}
+          {audioUrl && (
+            <AudioPlayer audioUrl={audioUrl} trans={trans} canDownload={canDownload} />
+          )}
         </div>
       </main>
 
