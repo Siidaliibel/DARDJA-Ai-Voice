@@ -138,6 +138,8 @@ const Header: React.FC<{
   );
 };
 // ✅ مشغل صوت احترافي
+import { FaPlay, FaPause } from "react-icons/fa";
+
 const AudioPlayer: React.FC<{ 
   audioUrl: string; 
   trans: Record<string, string>; 
@@ -222,9 +224,9 @@ const AudioPlayer: React.FC<{
         {/* زر التشغيل */}
         <button
           onClick={togglePlay}
-          className="bg-[#1A73E8] hover:bg-blue-600 text-white rounded-full p-3 shadow-md transition-transform active:scale-95"
+          className="bg-[#1A73E8] hover:bg-blue-600 text-white rounded-full p-3 shadow-md transition-transform active:scale-95 flex items-center justify-center"
         >
-          {isPlaying ? "⏸️" : "▶️"}
+          {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
         </button>
 
         {/* التحكم في السرعة */}
@@ -272,11 +274,13 @@ const AudioPlayer: React.FC<{
         src={audioUrl}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleTimeUpdate}
+        onEnded={() => setIsPlaying(false)} // ✅ عند نهاية الصوت يرجع الزر ▶️
         className="hidden"
       />
     </div>
   );
 };
+
 
 
 
