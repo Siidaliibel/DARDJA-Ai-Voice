@@ -137,38 +137,99 @@ const Header: React.FC<{
     </header>
   );
 };
-// ✅ مشغل الصوت
-const AudioPlayer: React.FC<{
-  audioUrl: string;
-  trans: Record<string, string>;
-  canDownload: boolean;
-}> = ({ audioUrl, trans, canDownload }) => {
+// ✅ مشغل صوت احترافي
+const AudioPlayer: React.FC<{ 
+  audioUrl: string; 
+  trans: Record<string, string>; 
+  canDownload: boolean; 
+  language: string; 
+}> = ({ audioUrl, trans, canDownload, language }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
 
   useEffect(() => {
-    if (audioRef.current) audioRef.current.playbackRate = playbackRate;
+    if (audioRef.current) {
+      audioRef.current.playbackRate = playbackRate;
+    }
   }, [playbackRate]);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.load();
-      audioRef.current.play().catch(() => {});
+      setIsPlaying(false);
+      setCurrentTime(0);
     }
   }, [audioUrl]);
 
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {});
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleTimeUpdate = () => {
+    if (!audioRef.current) return;
+    setCurrentTime(audioRef.current.currentTime);
+    setDuration(audioRef.current.duration || 0);
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!audioRef.current) return;
+    const value = Number(e.target.value);
+    audioRef.current.currentTime = value;
+    setCurrentTime(value);
+  };
+
+  const formatTime = (time: number) => {
+    if (isNaN(time)) return "0:00";
+    const m = Math.floor(time / 60);
+    const s = Math.floor(time % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
   return (
-    <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg w-full">
-      <audio
-        ref={audioRef}
-        key={audioUrl}
-        controls
-        src={audioUrl}
-        className="w-full"
-      />
-      <div className="flex items-center justify-between mt-4">
+    <div className="mt-6 p-5 bg-gray-800 rounded-xl shadow-lg w-full flex flex-col gap-4">
+      {/* شريط الصوت */}
+      <div className="flex flex-col gap-2">
+        <input
+          type="range"
+          min={0}
+          max={duration || 0}
+          step={0.1}
+          value={currentTime}
+          onChange={handleSeek}
+          className="w-full accent-[#1A73E8] cursor-pointer"
+        />
+        <div
+          className={`flex justify-between text-sm text-gray-300 ${
+            language === "ar" ? "flex-row-reverse" : ""
+          }`}
+        >
+          <span>{formatTime(currentTime)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+      </div>
+
+      {/* أزرار التحكم */}
+      <div className="flex items-center justify-between">
+        {/* زر التشغيل */}
+        <button
+          onClick={togglePlay}
+          className="bg-[#1A73E8] hover:bg-blue-600 text-white rounded-full p-3 shadow-md transition-transform active:scale-95"
+        >
+          {isPlaying ? "⏸️" : "▶️"}
+        </button>
+
+        {/* التحكم في السرعة */}
         <div className="flex items-center gap-2">
-          <label htmlFor="speed-control" className="text-sm">
+          <label htmlFor="speed-control" className="text-sm text-gray-300">
             {trans.speedControl}:
           </label>
           <select
@@ -185,6 +246,7 @@ const AudioPlayer: React.FC<{
           </select>
         </div>
 
+        {/* زر التحميل */}
         {canDownload ? (
           <a
             href={audioUrl}
@@ -202,9 +264,20 @@ const AudioPlayer: React.FC<{
           </button>
         )}
       </div>
+
+      {/* العنصر الصوتي */}
+      <audio
+        ref={audioRef}
+        key={audioUrl}
+        src={audioUrl}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleTimeUpdate}
+        className="hidden"
+      />
     </div>
   );
 };
+
 
 // ---------------- بدأ مكون App
 export default function App() {
@@ -577,17 +650,19 @@ const handleTryExample1 = () => {
 
           {/* عداد التوليدات */}
           <p className="text-center text-xs text-gray-500 mt-2">
-            {generationCount} / {profile?.max_generations ?? 2} توليد صوتي.
+            {generationCount} / {profile?.max_generations ?? 2} تعليق صوتي.
           </p>
 
           {/* مشغل الصوت */}
-          {audioUrl && (
-            <AudioPlayer
-              audioUrl={audioUrl}
-              trans={trans}
-              canDownload={canDownload}
-            />
-          )}
+         {audioUrl && (
+  <AudioPlayer 
+    audioUrl={audioUrl} 
+    trans={trans} 
+    canDownload={canDownload} 
+    language={language} // ✅ أضف هذا السطر فقط
+  />
+)}
+
         </div>
       </main>
 
