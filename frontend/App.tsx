@@ -218,7 +218,7 @@ const AudioPlayer: React.FC<{
       </div>
 
       {/* أزرار التحكم */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         {/* زر التشغيل */}
         <button
           onClick={togglePlay}
@@ -236,7 +236,7 @@ const AudioPlayer: React.FC<{
             id="speed-control"
             value={playbackRate}
             onChange={(e) => setPlaybackRate(Number(e.target.value))}
-            className="bg-gray-700 border border-gray-600 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#1A73E8]"
+            className="bg-[#1A73E8] text-white rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#1A73E8]"
           >
             {[0.75, 1, 1.25, 1.5, 1.75, 2].map((speed) => (
               <option key={speed} value={speed}>
@@ -251,14 +251,14 @@ const AudioPlayer: React.FC<{
           <a
             href={audioUrl}
             download="dardja_ai_voice.wav"
-            className="bg-[#1A73E8] hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors shadow-md text-sm"
+            className="bg-[#1A73E8] hover:bg-blue-600 text-white font-bold py-1.5 px-3 rounded-md transition-colors shadow-md text-sm"
           >
             {trans.downloadWav}
           </a>
         ) : (
           <button
             disabled
-            className="bg-gray-700 text-gray-400 font-bold py-2 px-4 rounded-lg text-sm cursor-not-allowed"
+            className="bg-gray-700 text-gray-400 font-bold py-1.5 px-3 rounded-md text-sm cursor-not-allowed"
           >
             التحميل متاح بعد التفعيل
           </button>
@@ -277,6 +277,7 @@ const AudioPlayer: React.FC<{
     </div>
   );
 };
+
 
 
 // ---------------- بدأ مكون App
