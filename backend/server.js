@@ -15,18 +15,18 @@ app.post("/generate", async (req, res) => {
   try {
     const { text, voice } = req.body;
     const voiceMap = {
-  Amel: "Leda",
-  Wael: "Algenib",
-  Imene: "Sulafat",
-  Amine: "Achird",
-  Samir: "Sadaltager",
-  Ramzi: "Zubenelgenubi",
-  Ines: "Laomedeia",
-  Yasmine: "Erinome",
-  Kawther: "Despina"
-};
+      Amel: "Leda",
+      Wael: "Algenib",
+      Imene: "Sulafat",
+      Amine: "Achird",
+      Samir: "Sadaltager",
+      Ramzi: "Zubenelgenubi",
+      Ines: "Laomedeia",
+      Yasmine: "Erinome",
+      Kawther: "Despina",
+    };
 
-    const selectedVoice = voiceMap[voice] || "Leda"; // ✅ تصحيح هنا (كان بدون ||)
+    const selectedVoice = voiceMap[voice] || "Leda"; // ✅ تصحيح هنا
 
     const response = await axios.post(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent",
@@ -101,7 +101,7 @@ app.delete("/admin/users/:id", async (req, res) => {
   }
 });
 
-// ✅ تفعيل أو تعطيل مستخدم (active = true/false)
+// ✅ تفعيل أو تعطيل مستخدم
 app.post("/admin/toggle-active", async (req, res) => {
   try {
     const { email, active } = req.body;
@@ -118,11 +118,11 @@ app.post("/admin/toggle-active", async (req, res) => {
 
 /* ------------------------------- ✅ Endpoint بسيط للـ cron-job ------------------------------- */
 app.get("/", (req, res) => {
-  res.send("Server Active ✅");
+  res.send("✅ Server Active and Running");
 });
 
 /* ------------------------------- 🚀 تشغيل السيرفر ------------------------------- */
-const PORT = process.env.PORT || 3001; // ✅ تصحيح هنا (كان بدون ||)
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () =>
   console.log(`✅ Server running on port ${PORT} (with Admin API)`)
 );
