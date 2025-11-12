@@ -4,7 +4,6 @@ import { supabase } from "./lib/supabaseClient";
 import {
   MAX_GENERATIONS,
   DEFAULT_VOICE_STYLE_PROMPT,
-  EXAMPLE_SCRIPT_TEXT,
   TRANSLATIONS,
 } from "./constants";
 import type { Language } from "./types";
@@ -160,7 +159,13 @@ const AudioPlayer: React.FC<{
 
   return (
     <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg w-full">
-      <audio ref={audioRef} key={audioUrl} controls src={audioUrl} className="w-full" />
+      <audio
+        ref={audioRef}
+        key={audioUrl}
+        controls
+        src={audioUrl}
+        className="w-full"
+      />
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center gap-2">
           <label htmlFor="speed-control" className="text-sm">
@@ -179,6 +184,7 @@ const AudioPlayer: React.FC<{
             ))}
           </select>
         </div>
+
         {canDownload ? (
           <a
             href={audioUrl}
@@ -204,7 +210,9 @@ const AudioPlayer: React.FC<{
 export default function App() {
   const navigate = useNavigate();
   const [language, setLanguage] = useState<Language>("en");
-  const [voiceStylePrompt, setVoiceStylePrompt] = useState(DEFAULT_VOICE_STYLE_PROMPT);
+  const [voiceStylePrompt, setVoiceStylePrompt] = useState(
+    DEFAULT_VOICE_STYLE_PROMPT
+  );
   const [scriptText, setScriptText] = useState("");
   const [selectedVoice, setSelectedVoice] = useState(VOICE_PREVIEWS[0].id);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -224,24 +232,32 @@ export default function App() {
   // ✅ تحميل بيانات الحساب من Supabase
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
       if (error || !session) {
         navigate("/login");
         return;
       }
+
       if (session) {
         localStorage.setItem("supabase.auth.token", JSON.stringify(session));
       }
+
       const user = session.user;
       const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
         .single();
+
       if (!profileData) {
         navigate("/login");
         return;
       }
+
       setProfile(profileData);
       setGenerationCount(profileData.usage_count ?? 0);
       const limit = profileData.max_generations ?? 2;
@@ -249,11 +265,11 @@ export default function App() {
         profileData.active === false ||
         (profileData.trial_used && profileData.usage_count >= limit);
       setIsTrialEnded(hasEnded);
+
       if (profileData.role === "admin") setIsAdmin(true);
     };
     fetchProfile();
   }, [navigate]);
-
   // ✅ الأمثلة الجاهزة
   const handleTryExample1 = () => {
     setScriptText(
@@ -267,10 +283,6 @@ export default function App() {
     );
   };
 
-  const handleTryExample = () => {
-    setVoiceStylePrompt(DEFAULT_VOICE_STYLE_PROMPT);
-    setScriptText(EXAMPLE_SCRIPT_TEXT);
-  };
   const startTimer = useCallback(() => {
     setGenerationTime(0);
     timerIntervalRef.current = window.setInterval(() => {
@@ -288,6 +300,7 @@ export default function App() {
   const handlePlayPreview = () => {
     const voice = VOICE_PREVIEWS.find((v) => v.id === selectedVoice);
     if (!voice?.previewUrl) return;
+
     if (previewAudioRef.current) {
       previewAudioRef.current.pause();
       previewAudioRef.current.currentTime = 0;
@@ -295,6 +308,7 @@ export default function App() {
       setIsPreviewPlaying(false);
       return;
     }
+
     const audio = new Audio(voice.previewUrl);
     previewAudioRef.current = audio;
     setIsPreviewPlaying(true);
@@ -313,6 +327,7 @@ export default function App() {
       .select("*")
       .eq("id", profile.id)
       .single();
+
     const effectiveProfile = latestProfile ?? profile;
     const limit = effectiveProfile.max_generations ?? 2;
     const currentCount = effectiveProfile.usage_count ?? 0;
@@ -320,7 +335,10 @@ export default function App() {
 
     if (!isActive || (effectiveProfile.trial_used && currentCount >= limit)) {
       setIsTrialEnded(true);
-      await supabase.from("profiles").update({ trial_used: true }).eq("id", profile.id);
+      await supabase
+        .from("profiles")
+        .update({ trial_used: true })
+        .eq("id", profile.id);
       alert("🎯 انتهت تجربتك المجانية. يمكنك تفعيل 200 توليد صوتي بـ 2900 دج.");
       setProfile((p: any) => ({ ...p, trial_used: true, active: false }));
       return;
@@ -331,6 +349,7 @@ export default function App() {
       setError("الرجاء إدخال نص قبل التوليد.");
       return;
     }
+
     if (scriptText.length > (effectiveProfile?.max_characters ?? 600)) {
       setError("لقد تجاوزت الحد المسموح للحروف.");
       return;
@@ -358,6 +377,7 @@ export default function App() {
         .eq("id", profile.id)
         .select("*")
         .single();
+
       if (updatedProfile) {
         setProfile(updatedProfile);
         setGenerationCount(updatedProfile.usage_count ?? newCount);
@@ -365,8 +385,14 @@ export default function App() {
         setGenerationCount(newCount);
       }
 
-      if ((updatedProfile?.usage_count ?? newCount) >= (updatedProfile?.max_generations ?? limit)) {
-        await supabase.from("profiles").update({ trial_used: true }).eq("id", profile.id);
+      if (
+        (updatedProfile?.usage_count ?? newCount) >=
+        (updatedProfile?.max_generations ?? limit)
+      ) {
+        await supabase
+          .from("profiles")
+          .update({ trial_used: true })
+          .eq("id", profile.id);
         setIsTrialEnded(true);
         alert("🚫 انتهت تجربتك المجانية. فعّل حسابك للمتابعة.");
       }
@@ -387,7 +413,9 @@ export default function App() {
   };
 
   const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
@@ -460,22 +488,15 @@ export default function App() {
               onClick={handleTryExample1}
               className="text-sm text-[#1A73E8] hover:underline"
             >
-              Try Example 1
+              {trans.tryExample1}
             </button>
             <button
               onClick={handleTryExample2}
               className="text-sm text-[#1A73E8] hover:underline"
             >
-              Try Example 2
-            </button>
-            <button
-              onClick={handleTryExample}
-              className="text-sm text-[#1A73E8] hover:underline"
-            >
-              {trans.tryExample}
+              {trans.tryExample2}
             </button>
           </div>
-
           {/* قائمة الأصوات 🎧 / ⏸️ */}
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="w-full sm:w-auto">
@@ -493,6 +514,7 @@ export default function App() {
                   ))}
                 </select>
 
+                {/* زر المعاينة 🎧 */}
                 <button
                   onClick={handlePlayPreview}
                   className={`${
@@ -531,26 +553,39 @@ export default function App() {
                       : "bg-[#1A73E8] hover:bg-blue-600 text-white"
                   } font-bold py-2 px-4 rounded-lg transition-colors shadow-md flex-grow`}
                 >
-                  {isTrialEnded ? "🔒 انتهت التجربة — فعّل الحساب" : trans.generateVoice}
+                  {isTrialEnded
+                    ? "🔒 انتهت التجربة — فعّل الحساب"
+                    : trans.generateVoice}
                 </button>
               )}
             </div>
           </div>
 
+          {/* إشعار نهاية التجربة */}
           {isTrialEnded && (
             <p className="text-center text-yellow-400 text-sm mt-2">
-              🎯 انتهت تجربتك المجانية. يمكنك تفعيل 200 تعليق صوتي بـ <b>2900 دج</b>.
+              🎯 انتهت تجربتك المجانية. يمكنك تفعيل 200 تعليق صوتي بـ{" "}
+              <b>2900 دج</b>.
             </p>
           )}
 
-          {error && <p className="text-center text-red-400 text-sm mt-2">{error}</p>}
+          {/* عرض الأخطاء */}
+          {error && (
+            <p className="text-center text-red-400 text-sm mt-2">{error}</p>
+          )}
 
+          {/* عداد التوليدات */}
           <p className="text-center text-xs text-gray-500 mt-2">
             {generationCount} / {profile?.max_generations ?? 2} توليد صوتي.
           </p>
 
+          {/* مشغل الصوت */}
           {audioUrl && (
-            <AudioPlayer audioUrl={audioUrl} trans={trans} canDownload={canDownload} />
+            <AudioPlayer
+              audioUrl={audioUrl}
+              trans={trans}
+              canDownload={canDownload}
+            />
           )}
         </div>
       </main>
