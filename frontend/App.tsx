@@ -669,8 +669,27 @@ const handleTryExample1 = () => {
       </main>
 
       <footer className="w-full text-center text-gray-500 text-xs py-4 mt-8">
-        {trans.footerText}
-      </footer>
+  {trans.footerText}
+</footer>
+
+{/* 🔰 زر واتساب عائم */}
+<a
+  href="https://wa.me/213540095943"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-all flex items-center justify-center"
+  title="تحدث معنا على واتساب"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 32 32"
+    fill="currentColor"
+    className="w-7 h-7"
+  >
+    <path d="M16 .4C7.3.4.4 7.3.4 16c0 2.7.7 5.3 2 7.6L.4 31.6l8.2-2.1c2.2 1.2 4.8 1.9 7.4 1.9 8.7 0 15.6-6.9 15.6-15.4C31.6 7.3 24.7.4 16 .4zm0 28.2c-2.4 0-4.8-.6-6.8-1.8l-.5-.3-4.9 1.2 1.3-4.8-.3-.5c-1.2-2.1-1.8-4.5-1.8-7 0-7.6 6.2-13.8 13.9-13.8s13.9 6.2 13.9 13.8S23.6 28.6 16 28.6zm7.8-10.4c-.4-.2-2.3-1.1-2.6-1.3-.4-.1-.7-.2-1 .2-.3.3-1.2 1.3-1.5 1.6-.3.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1.1-2-2.5-2.2-2.9-.2-.4 0-.6.2-.8s.4-.5.6-.7c.2-.3.3-.5.5-.8.2-.3.1-.6 0-.8-.1-.2-1-2.5-1.4-3.4-.4-.8-.7-.7-1-.7h-.8c-.3 0-.8.1-1.1.5s-1.4 1.3-1.4 3.2 1.5 3.7 1.8 4c.2.3 3 4.6 7.3 6.3 1 .4 1.8.7 2.4.9 1 .3 1.9.2 2.6.2.8-.1 2.3-.9 2.7-1.8.3-.8.3-1.5.2-1.7-.1-.3-.3-.4-.7-.6z" />
+  </svg>
+</a>
+
     </div>
   );
 }
