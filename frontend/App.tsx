@@ -78,6 +78,7 @@ const Header: React.FC<{
   isAdmin: boolean;
   onAdminClick: () => void;
 }> = ({ language, setLanguage, siteTitle, onLogout, isAdmin, onAdminClick }) => {
+
   const translations = {
     en: "Logout",
     fr: "Déconnexion",
@@ -86,10 +87,13 @@ const Header: React.FC<{
 
   return (
     <header className="py-4 px-4 md:px-8 w-full relative mb-4 flex justify-between items-start">
+
+      {/* زر الخروج مع أيقونة فقط + الترجمة */}
       <button
         onClick={onLogout}
         className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors absolute top-6 left-6 md:left-8"
       >
+        {/* أيقونة خروج فقط بدون كتابة logout */}
         <span
           className="material-symbols-outlined text-[28px] align-middle"
           style={{
@@ -98,6 +102,8 @@ const Header: React.FC<{
         >
           logout
         </span>
+
+        {/* النص المترجم فقط */}
         <span className="text-base font-semibold select-none">
           {translations[language]}
         </span>
@@ -111,6 +117,7 @@ const Header: React.FC<{
           لوحة تحكم الأدمين ⚙️
         </button>
       )}
+
 
       <div className="opacity-0 animate-fade-in flex flex-col items-center w-full mt-10">
         <Logo />
