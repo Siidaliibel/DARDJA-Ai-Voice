@@ -70,6 +70,8 @@ const VOICE_PREVIEWS = [
 ];
 
 // ✅ مكون الهيدر
+import { FiLogOut } from "react-icons/fi";
+
 const Header: React.FC<{
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -88,27 +90,21 @@ const Header: React.FC<{
   return (
     <header className="py-4 px-4 md:px-8 w-full relative mb-4 flex justify-between items-start">
 
-      {/* زر الخروج مع أيقونة فقط + الترجمة */}
+      {/* زر الخروج مع أيقونة + نص مترجم */}
       <button
         onClick={onLogout}
         className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors absolute top-6 left-6 md:left-8"
       >
-        {/* أيقونة خروج فقط بدون كتابة logout */}
-        <span
-          className="material-symbols-outlined text-[28px] align-middle"
-          style={{
-            fontVariationSettings: "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 32",
-          }}
-        >
-          logout
-        </span>
+        {/* أيقونة احترافية */}
+        <FiLogOut size={26} />
 
-        {/* النص المترجم فقط */}
+        {/* النص المترجم */}
         <span className="text-base font-semibold select-none">
           {translations[language]}
         </span>
       </button>
 
+      {/* زر لوحة تحكم الأدمين */}
       {isAdmin && (
         <button
           onClick={onAdminClick}
@@ -118,7 +114,7 @@ const Header: React.FC<{
         </button>
       )}
 
-
+      {/* العنوان و اللوجو */}
       <div className="opacity-0 animate-fade-in flex flex-col items-center w-full mt-10">
         <Logo />
         <h1 className="text-3xl md:text-4xl font-merriweather text-center mt-4 tracking-wider animated-gradient-text logo-title text-white">
@@ -126,6 +122,7 @@ const Header: React.FC<{
         </h1>
       </div>
 
+      {/* أزرار اختيار اللغة */}
       <div className="absolute top-6 right-4 md:right-8 flex gap-2 text-sm">
         {(["en", "fr", "ar"] as Language[]).map((lang) => (
           <button
@@ -144,6 +141,7 @@ const Header: React.FC<{
     </header>
   );
 };
+
 // ✅ مشغل صوت احترافي
 import { FaPlay, FaPause } from "react-icons/fa";
 
