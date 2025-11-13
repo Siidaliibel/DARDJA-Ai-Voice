@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../src/context/LanguageContext";
-import { Eye, EyeOff } from "lucide-react"; // ✅ تمت الإضافة
+import { Eye, EyeOff } from "lucide-react";
 
 const translations = {
   ar: {
@@ -41,20 +41,38 @@ export default function ResetPassword() {
   const { language } = useLanguage();
   const t = translations[language];
   const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // ✅ تمت الإضافة
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // ✅ تمت الإضافة
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // ✅ الالتقاط التلقائي للـ token من Supabase
+  useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
+    const access_token = hashParams.get("access_token");
+    const type = hashParams.get("type");
+
+    if (type === "recovery" && access_token) {
+      supabase.auth.setSession({
+        access_token,
+        refresh_token: hashParams.get("refresh_token") || "",
+      });
+    }
+  }, []);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
+
     if (password !== confirmPassword) {
       setMessage(t.mismatch);
       return;
     }
+
     const { error } = await supabase.auth.updateUser({ password });
+
     if (error) setMessage(t.error);
     else setMessage(t.success);
   };
