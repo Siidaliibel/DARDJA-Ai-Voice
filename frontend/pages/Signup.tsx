@@ -20,7 +20,8 @@ const translations = {
     alreadyRegistered: "❌ هذا البريد الإلكتروني مسجل بالفعل. حاول تسجيل الدخول.",
     weakPassword: "⚠️ كلمة المرور ضعيفة جدًا. الرجاء اختيار كلمة أقوى.",
     signupError: "حدث خطأ أثناء إنشاء الحساب. حاول مجددًا.",
-    signinError: "تم إنشاء الحساب ولكن حدث خطأ أثناء تسجيل الدخول.",
+    signinError:
+      "تم إنشاء حسابك بنجاح. يرجى مراجعة بريدك الإلكتروني والنقر على رابط التفعيل لإتمام عملية التسجيل.",
   },
   en: {
     title: "Create a New Account ✨",
@@ -36,7 +37,8 @@ const translations = {
     alreadyRegistered: "❌ This email is already registered. Try logging in.",
     weakPassword: "⚠️ Password too weak. Please choose a stronger one.",
     signupError: "An error occurred while creating the account. Try again.",
-    signinError: "Account created, but an error occurred during login.",
+    signinError:
+      "Your account has been created successfully. Please check your email and click the activation link to complete your registration.",
   },
   fr: {
     title: "Créer un nouveau compte ✨",
@@ -52,9 +54,11 @@ const translations = {
     alreadyRegistered: "❌ Cet e-mail est déjà enregistré. Essayez de vous connecter.",
     weakPassword: "⚠️ Mot de passe trop faible. Choisissez-en un plus fort.",
     signupError: "Une erreur est survenue lors de la création du compte.",
-    signinError: "Compte créé, mais une erreur est survenue à la connexion.",
+    signinError:
+      "Votre compte a été créé avec succès. Veuillez vérifier votre e-mail et cliquer sur le lien d’activation pour finaliser votre inscription.",
   },
 };
+
 
 export default function Signup() {
   const [username, setUsername] = useState("");
