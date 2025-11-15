@@ -48,7 +48,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:3000/reset-password", // ✅ غيّر هذا إلى رابط موقعك الحقيقي لاحقًا
+      redirectTo: "http://dardjaaivoice.com/reset-password", // ✅ غيّر هذا إلى رابط موقعك الحقيقي لاحقًا
     });
 
     setLoading(false);
