@@ -61,7 +61,8 @@ export const VOICES: Voice[] = [
 ];
 
 
-export const DEFAULT_VOICE_STYLE_PROMPT = `Speak in energetic Algerian Darja, fast but clear. Grab attention from the first second. Use very short sentences and a lively rhythm. Highlight one strong benefit only. Keep the tone modern, catchy, and exciting. End with a quick, direct call to action that feels urgent`;
+export const DEFAULT_VOICE_STYLE_PROMPT = `Please read the following in the Algerian dialect with a marketing tone: energetic, persuasive, and friendly 
+Read in Algerian Dialect with an enthusiastic, persuasive, and approachable marketing voice. Make it sound dynamic and professional, as if promoting a product to customers.`;
 
 export const EXAMPLE_SCRIPT_TEXT = `Welcome to DARDJA Ai Voice! Try converting your text to voice in Algerian Arabic.`;
 
