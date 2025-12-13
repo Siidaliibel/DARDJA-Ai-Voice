@@ -61,7 +61,7 @@ export const VOICES: Voice[] = [
 ];
 
 
-export const DEFAULT_VOICE_STYLE_PROMPT = `Please generate a voiceover in the Algerian Arabic dialect with a marketing tone that is energetic, persuasive, and friendly. The voice should sound like it's speaking directly to the customer, encouraging them to take action. The tone should be confident, enthusiastic, and engaging, with a medium to fast pace and natural conversational rhythm. Here's the script to read:`;
+export const DEFAULT_VOICE_STYLE_PROMPT = `Speak in energetic Algerian Darja, fast but clear. Grab attention from the first second. Use very short sentences and a lively rhythm. Highlight one strong benefit only. Keep the tone modern, catchy, and exciting. End with a quick, direct call to action that feels urgent`;
 
 export const EXAMPLE_SCRIPT_TEXT = `Welcome to DARDJA Ai Voice! Try converting your text to voice in Algerian Arabic.`;
 
