@@ -61,8 +61,20 @@ export const VOICES: Voice[] = [
 ];
 
 
-export const DEFAULT_VOICE_STYLE_PROMPT = `Please read the following in the Algerian dialect with a marketing tone: energetic, persuasive, and friendly 
-Read in Algerian Dialect with an enthusiastic, persuasive, and approachable marketing voice. Make it sound dynamic and professional, as if promoting a product to customers.`;
+export const DEFAULT_VOICE_STYLE_PROMPT = `Read the following text in Algerian Arabic (Darja) with an aggressive, high-impact sales voice.
+The delivery must be very energetic, urgent, confident, and persuasive, designed to force attention and trigger immediate buying decisions.
+Strong, powerful marketing tone
+Fast and punchy rhythm (no calm delivery)
+Create urgency, FOMO, and desire
+Emphasize problem → solution → result clearly
+Sound like a top-performing Facebook / TikTok ad voice-over
+Bold, assertive, convincing (not shy, not neutral)
+Use vocal emphasis on key words and benefits
+Finish with a direct, commanding call to action
+Voice style:
+Commercial, sales-driven, modern, confident Algerian street-marketing tone
+Goal:
+Make the listener feel they need the product now, not later.`;
 
 export const EXAMPLE_SCRIPT_TEXT = `Welcome to DARDJA Ai Voice! Try converting your text to voice in Algerian Arabic.`;
 
